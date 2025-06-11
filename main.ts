@@ -61,551 +61,299 @@ console.log(`Final UUID in use: ${userID}`);
 
 Deno.serve(async (request: Request) => {
   const upgrade = request.headers.get('upgrade') || '';
-  if (upgrade.toLowerCase() !== 'websocket') {
+  if (upgrade.toLowerCase() != 'websocket') {
     const url = new URL(request.url);
     switch (url.pathname) {
-      case '/':
+      case '/': {
+        const htmlContent = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iOS Style Interface</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --ios-bg: #f2f2f7;
+            --ios-card: #ffffff;
+            --ios-primary: #007aff;
+            --ios-success: #34c759;
+            --ios-text: #1c1c1e;
+            --ios-secondary-text: #8e8e93;
+            --ios-separator: #c6c6c8;
+            --ios-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+            background-color: var(--ios-bg);
+            color: var(--ios-text);
+            line-height: 1.6;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        /* Header Section */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #000;
+        }
+        
+        .header p {
+            color: var(--ios-secondary-text);
+            font-size: 16px;
+        }
+        
+        /* Status Card */
+        .status-card {
+            background-color: var(--ios-card);
+            border-radius: 14px;
+            padding: 22px;
+            margin-bottom: 20px;
+            box-shadow: var(--ios-shadow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: slideUp 0.5s ease-out;
+        }
+        
+        .status-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .status-icon {
+            width: 28px;
+            height: 28px;
+            background-color: rgba(52, 199, 89, 0.12);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .status-icon i {
+            color: var(--ios-success);
+            font-size: 16px;
+        }
+        
+        .status-text {
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--ios-success);
+        }
+        
+        /* Profile Card */
+        .profile-card {
+            background-color: var(--ios-card);
+            border-radius: 14px;
+            box-shadow: var(--ios-shadow);
+            overflow: hidden;
+            animation: slideUp 0.6s ease-out 0.1s forwards;
+            opacity: 0;
+        }
+        
+        .card-section {
+            padding: 18px 20px;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.2s;
+        }
+        
+        .card-section:active {
+            background-color: rgba(0, 0, 0, 0.04);
+        }
+        
+        .card-section:not(:last-child) {
+            border-bottom: 1px solid var(--ios-separator);
+        }
+        
+        .card-icon {
+            width: 32px;
+            height: 32px;
+            background-color: rgba(0, 122, 255, 0.12);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+        }
+        
+        .card-icon i {
+            color: var(--ios-primary);
+            font-size: 16px;
+        }
+        
+        .card-content {
+            flex: 1;
+        }
+        
+        .card-label {
+            font-size: 12px;
+            color: var(--ios-secondary-text);
+            margin-bottom: 2px;
+        }
+        
+        .card-value {
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        .card-link {
+            color: var(--ios-primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .card-link i {
+            margin-left: 5px;
+            font-size: 14px;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: var(--ios-secondary-text);
+            font-size: 13px;
+            animation: fadeIn 0.8s ease-out 0.3s forwards;
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Developer Profile</h1>
+            <p>Connect with me on social platforms</p>
+        </div>
+        
+        <div class="status-card">
+            <div class="status-content">
+                <div class="status-icon">
+                    <i class="fas fa-check"></i>
+                </div>
+                <div class="status-text">SERVER IS ONLINE ✅</div>
+            </div>
+        </div>
+        
+        <div class="profile-card">
+            <div class="card-section">
+                <div class="card-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <div class="card-content">
+                    <div class="card-label">DEVELOPER</div>
+                    <div class="card-value">amine_dz46</div>
+                </div>
+                <i class="fas fa-chevron-right"></i>
+            </div>
+            
+            <div class="card-section">
+                <div class="card-icon">
+                    <i class="fab fa-telegram"></i>
+                </div>
+                <div class="card-content">
+                    <div class="card-label">TELEGRAM CHANNEL</div>
+                    <a href="https://t.me/aminedz151" class="card-value card-link" target="_blank">
+                        @aminedz151
+                        <i class="fas fa-external-link-alt"></i>
+                    </a>
+                </div>
+                <i class="fas fa-chevron-right"></i>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>© 2025 All rights reserved</p>
+        </div>
+    </div>
+</body>
+</html>
+        `;
+        return new Response(htmlContent, {
+          headers: {
+            'Content-Type': 'text/html; charset=utf-8',
+          },
+        });
+      }
       case `/${userID}`:
-        return new Response(
-          `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iOS Style Interface</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --ios-bg: #f2f2f7;
-            --ios-card: #ffffff;
-            --ios-primary: #007aff;
-            --ios-success: #34c759;
-            --ios-text: #1c1c1e;
-            --ios-secondary-text: #8e8e93;
-            --ios-separator: #c6c6c8;
-            --ios-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
-            background-color: var(--ios-bg);
-            color: var(--ios-text);
-            line-height: 1.6;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            min-height: 100vh;
-        }
-        
-        .container {
-            width: 100%;
-            max-width: 500px;
-        }
-        
-        /* Header Section */
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-            animation: fadeIn 0.6s ease-out;
-        }
-        
-        .header h1 {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: #000;
-        }
-        
-        .header p {
-            color: var(--ios-secondary-text);
-            font-size: 16px;
-        }
-        
-        /* Status Card */
-        .status-card {
-            background-color: var(--ios-card);
-            border-radius: 14px;
-            padding: 22px;
-            margin-bottom: 20px;
-            box-shadow: var(--ios-shadow);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            animation: slideUp 0.5s ease-out;
-        }
-        
-        .status-content {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        
-        .status-icon {
-            width: 28px;
-            height: 28px;
-            background-color: rgba(52, 199, 89, 0.12);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .status-icon i {
-            color: var(--ios-success);
-            font-size: 16px;
-        }
-        
-        .status-text {
-            font-size: 18px;
-            font-weight: 500;
-            color: var(--ios-success);
-        }
-        
-        /* Profile Card */
-        .profile-card {
-            background-color: var(--ios-card);
-            border-radius: 14px;
-            box-shadow: var(--ios-shadow);
-            overflow: hidden;
-            animation: slideUp 0.6s ease-out 0.1s forwards;
-            opacity: 0;
-        }
-        
-        .card-section {
-            padding: 18px 20px;
-            display: flex;
-            align-items: center;
-            transition: background-color 0.2s;
-        }
-        
-        .card-section:active {
-            background-color: rgba(0, 0, 0, 0.04);
-        }
-        
-        .card-section:not(:last-child) {
-            border-bottom: 1px solid var(--ios-separator);
-        }
-        
-        .card-icon {
-            width: 32px;
-            height: 32px;
-            background-color: rgba(0, 122, 255, 0.12);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 16px;
-        }
-        
-        .card-icon i {
-            color: var(--ios-primary);
-            font-size: 16px;
-        }
-        
-        .card-content {
-            flex: 1;
-        }
-        
-        .card-label {
-            font-size: 12px;
-            color: var(--ios-secondary-text);
-            margin-bottom: 2px;
-        }
-        
-        .card-value {
-            font-size: 16px;
-            font-weight: 500;
-        }
-        
-        .card-link {
-            color: var(--ios-primary);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-        }
-        
-        .card-link i {
-            margin-left: 5px;
-            font-size: 14px;
-        }
-        
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        @keyframes slideUp {
-            from { 
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to { 
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        /* Footer */
-        .footer {
-            text-align: center;
-            margin-top: 30px;
-            color: var(--ios-secondary-text);
-            font-size: 13px;
-            animation: fadeIn 0.8s ease-out 0.3s forwards;
-            opacity: 0;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>Developer Profile</h1>
-            <p>Connect with me on social platforms</p>
-        </div>
-        
-        <div class="status-card">
-            <div class="status-content">
-                <div class="status-icon">
-                    <i class="fas fa-check"></i>
-                </div>
-                <div class="status-text">SERVER IS ONLINE ✅</div>
-            </div>
-        </div>
-        
-        <div class="profile-card">
-            <div class="card-section">
-                <div class="card-icon">
-                    <i class="fas fa-code"></i>
-                </div>
-                <div class="card-content">
-                    <div class="card-label">DEVELOPER</div>
-                    <div class="card-value">amine_dz46</div>
-                </div>
-                <i class="fas fa-chevron-right"></i>
-            </div>
-            
-            <div class="card-section">
-                <div class="card-icon">
-                    <i class="fab fa-telegram"></i>
-                </div>
-                <div class="card-content">
-                    <div class="card-label">TELEGRAM CHANNEL</div>
-                    <a href="https://t.me/aminedz151" class="card-value card-link" target="_blank">
-                        @aminedz151
-                        <i class="fas fa-external-link-alt"></i>
-                    </a>
-                </div>
-                <i class="fas fa-chevron-right"></i>
-            </div>
-        </div>
-        
-        <div class="footer">
-            <p>© 2025 All rights reserved</p>
-        </div>
-    </div>
-</body>
-</html>`,
-          {
-            status: 404,
-            headers: {
-              'Content-Type': 'text/html; charset=UTF-8',
-            },
-          }
-        );
       default:
-        return new Response(
-          `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iOS Style Interface</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --ios-bg: #f2f2f7;
-            --ios-card: #ffffff;
-            --ios-primary: #007aff;
-            --ios-success: #34c759;
-            --ios-text: #1c1c1e;
-            --ios-secondary-text: #8e8e93;
-            --ios-separator: #c6c6c8;
-            --ios-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
-            background-color: var(--ios-bg);
-            color: var(--ios-text);
-            line-height: 1.6;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            min-height: 100vh;
-        }
-        
-        .container {
-            width: 100%;
-            max-width: 500px;
-        }
-        
-        /* Header Section */
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-            animation: fadeIn 0.6s ease-out;
-        }
-        
-        .header h1 {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: #000;
-        }
-        
-        .header p {
-            color: var(--ios-secondary-text);
-            font-size: 16px;
-        }
-        
-        /* Status Card */
-        .status-card {
-            background-color: var(--ios-card);
-            border-radius: 14px;
-            padding: 22px;
-            margin-bottom: 20px;
-            box-shadow: var(--ios-shadow);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            animation: slideUp 0.5s ease-out;
-        }
-        
-        .status-content {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        
-        .status-icon {
-            width: 28px;
-            height: 28px;
-            background-color: rgba(52, 199, 89, 0.12);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .status-icon i {
-            color: var(--ios-success);
-            font-size: 16px;
-        }
-        
-        .status-text {
-            font-size: 18px;
-            font-weight: 500;
-            color: var(--ios-success);
-        }
-        
-        /* Profile Card */
-        .profile-card {
-            background-color: var(--ios-card);
-            border-radius: 14px;
-            box-shadow: var(--ios-shadow);
-            overflow: hidden;
-            animation: slideUp 0.6s ease-out 0.1s forwards;
-            opacity: 0;
-        }
-        
-        .card-section {
-            padding: 18px 20px;
-            display: flex;
-            align-items: center;
-            transition: background-color 0.2s;
-        }
-        
-        .card-section:active {
-            background-color: rgba(0, 0, 0, 0.04);
-        }
-        
-        .card-section:not(:last-child) {
-            border-bottom: 1px solid var(--ios-separator);
-        }
-        
-        .card-icon {
-            width: 32px;
-            height: 32px;
-            background-color: rgba(0, 122, 255, 0.12);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 16px;
-        }
-        
-        .card-icon i {
-            color: var(--ios-primary);
-            font-size: 16px;
-        }
-        
-        .card-content {
-            flex: 1;
-        }
-        
-        .card-label {
-            font-size: 12px;
-            color: var(--ios-secondary-text);
-            margin-bottom: 2px;
-        }
-        
-        .card-value {
-            font-size: 16px;
-            font-weight: 500;
-        }
-        
-        .card-link {
-            color: var(--ios-primary);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-        }
-        
-        .card-link i {
-            margin-left: 5px;
-            font-size: 14px;
-        }
-        
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        @keyframes slideUp {
-            from { 
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to { 
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        /* Footer */
-        .footer {
-            text-align: center;
-            margin-top: 30px;
-            color: var(--ios-secondary-text);
-            font-size: 13px;
-            animation: fadeIn 0.8s ease-out 0.3s forwards;
-            opacity: 0;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>Developer Profile</h1>
-            <p>Connect with me on social platforms</p>
-        </div>
-        
-        <div class="status-card">
-            <div class="status-content">
-                <div class="status-icon">
-                    <i class="fas fa-check"></i>
-                </div>
-                <div class="status-text">SERVER IS ONLINE ✅</div>
-            </div>
-        </div>
-        
-        <div class="profile-card">
-            <div class="card-section">
-                <div class="card-icon">
-                    <i class="fas fa-code"></i>
-                </div>
-                <div class="card-content">
-                    <div class="card-label">DEVELOPER</div>
-                    <div class="card-value">amine_dz46</div>
-                </div>
-                <i class="fas fa-chevron-right"></i>
-            </div>
-            
-            <div class="card-section">
-                <div class="card-icon">
-                    <i class="fab fa-telegram"></i>
-                </div>
-                <div class="card-content">
-                    <div class="card-label">TELEGRAM CHANNEL</div>
-                    <a href="https://t.me/aminedz151" class="card-value card-link" target="_blank">
-                        @aminedz151
-                        <i class="fas fa-external-link-alt"></i>
-                    </a>
-                </div>
-                <i class="fas fa-chevron-right"></i>
-            </div>
-        </div>
-        
-        <div class="footer">
-            <p>© 2025 All rights reserved</p>
-        </div>
-    </div>
-</body>
-</html>`,
-          {
-            status: 404,
-            headers: {
-              'Content-Type': 'text/html; charset=UTF-8',
-            },
-          }
-        );
+        return new Response('Not found', { status: 404 })
     }
   } else {
-    return await vlessOverWSHandler(request);
+    return await vlessOverWSHandler(request)
   }
-});
+})
 
 async function vlessOverWSHandler(request: Request) {
-  const { socket, response } = Deno.upgradeWebSocket(request);
-  let address = '';
-  let portWithRandomLog = '';
+  const { socket, response } = Deno.upgradeWebSocket(request)
+  let address = ''
+  let portWithRandomLog = ''
   const log = (info: string, event = '') => {
-    console.log(`[${address}:${portWithRandomLog}] ${info}`, event);
-  };
-  const earlyDataHeader = request.headers.get('sec-websocket-protocol') || '';
-  const readableWebSocketStream = makeReadableWebSocketStream(socket, earlyDataHeader, log);
+    console.log(`[${address}:${portWithRandomLog}] ${info}`, event)
+  }
+  const earlyDataHeader = request.headers.get('sec-websocket-protocol') || ''
+  const readableWebSocketStream = makeReadableWebSocketStream(socket, earlyDataHeader, log)
   let remoteSocketWapper: any = {
     value: null,
-  };
-  let udpStreamWrite: any = null;
-  let isDns = false;
+  }
+  let udpStreamWrite: any = null
+  let isDns = false
 
   readableWebSocketStream
     .pipeTo(
       new WritableStream({
         async write(chunk, controller) {
           if (isDns && udpStreamWrite) {
-            return udpStreamWrite(chunk);
+            return udpStreamWrite(chunk)
           }
           if (remoteSocketWapper.value) {
-            const writer = remoteSocketWapper.value.writable.getWriter();
-            await writer.write(new Uint8Array(chunk));
-            writer.releaseLock();
-            return;
+            const writer = remoteSocketWapper.value.writable.getWriter()
+            await writer.write(new Uint8Array(chunk))
+            writer.releaseLock()
+            return
           }
 
           const {
@@ -616,31 +364,31 @@ async function vlessOverWSHandler(request: Request) {
             rawDataIndex,
             vlessVersion = new Uint8Array([0, 0]),
             isUDP,
-          } = processVlessHeader(chunk, userID);
-          address = addressRemote;
-          portWithRandomLog = `${portRemote}--${Math.random()} ${isUDP ? 'udp ' : 'tcp '} `;
+          } = processVlessHeader(chunk, userID)
+          address = addressRemote
+          portWithRandomLog = `${portRemote}--${Math.random()} ${isUDP ? 'udp ' : 'tcp '} `
           if (hasError) {
-            throw new Error(message);
-            return;
+            throw new Error(message)
+            return
           }
           if (isUDP) {
             if (portRemote === 53) {
-              isDns = true;
+              isDns = true
             } else {
-              throw new Error('UDP proxy only enable for DNS which is port 53');
-              return;
+              throw new Error('UDP proxy only enable for DNS which is port 53')
+              return
             }
           }
           
-          const vlessResponseHeader = new Uint8Array([vlessVersion[0], 0]);
-          const rawClientData = chunk.slice(rawDataIndex);
+          const vlessResponseHeader = new Uint8Array([vlessVersion[0], 0])
+          const rawClientData = chunk.slice(rawDataIndex)
 
           if (isDns) {
-            console.log('isDns:', isDns);
-            const { write } = await handleUDPOutBound(socket, vlessResponseHeader, log);
-            udpStreamWrite = write;
-            udpStreamWrite(rawClientData);
-            return;
+            console.log('isDns:', isDns)
+            const { write } = await handleUDPOutBound(socket, vlessResponseHeader, log)
+            udpStreamWrite = write
+            udpStreamWrite(rawClientData)
+            return
           }
           handleTCPOutBound(
             remoteSocketWapper,
@@ -650,21 +398,21 @@ async function vlessOverWSHandler(request: Request) {
             socket,
             vlessResponseHeader,
             log
-          );
+          )
         },
         close() {
-          log(`readableWebSocketStream is close`);
+          log(`readableWebSocketStream is close`)
         },
         abort(reason) {
-          log(`readableWebSocketStream is abort`, JSON.stringify(reason));
+          log(`readableWebSocketStream is abort`, JSON.stringify(reason))
         },
       })
     )
     .catch((err) => {
-      log('readableWebSocketStream pipeTo error', err);
-    });
+      log('readableWebSocketStream pipeTo error', err)
+    })
 
-  return response;
+  return response
 }
 
 async function handleTCPOutBound(
@@ -672,7 +420,7 @@ async function handleTCPOutBound(
   addressRemote: string,
   portRemote: number,
   rawClientData: Uint8Array,
-  webughedSocket: WebSocket,
+  webSocket: WebSocket,
   vlessResponseHeader: Uint8Array,
   log: (info: string, event?: string) => void
 ) {
